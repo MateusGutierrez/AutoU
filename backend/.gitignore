@@ -1,0 +1,8 @@
+venv
+pythest.init
+.vscode
+__pycache__
+.pytest_cache
+.env
+app.log
+logs

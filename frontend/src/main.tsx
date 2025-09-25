@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import './index.css';
 import { ThemeProvider } from './components/theme-provider';
+import { EmailProvider } from './context/emailContext';
 
 const router = createRouter({ routeTree })
 
@@ -19,7 +20,9 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <RouterProvider router={router} />
+        <EmailProvider>
+          <RouterProvider router={router} />
+        </EmailProvider>
       </ThemeProvider>
     </StrictMode>,
   )
