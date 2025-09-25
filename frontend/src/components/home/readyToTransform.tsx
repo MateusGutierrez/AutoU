@@ -1,7 +1,13 @@
 import { ArrowRight } from "lucide-react"
 import { Button } from "../ui/button"
+import { useNavigate } from "@tanstack/react-router"
+import { useCallback } from "react"
 
 const ReadyToTransform = () => {
+      const navigate = useNavigate()
+        const click = useCallback(() => {
+            navigate({to: '/quickStart'})
+        },[])
     return (
          <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-neutral-900/50 to-neutral-900/50 rounded-xl my-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -12,7 +18,7 @@ const ReadyToTransform = () => {
             Join hundreds of companies already saving hours every day
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className=" px-8 py-6">
+            <Button className=" px-8 py-6" onClick={click}>
               Get Started
               <ArrowRight className="h-5 w-5" />
             </Button>

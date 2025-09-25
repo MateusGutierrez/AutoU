@@ -1,18 +1,21 @@
-import { ArrowRight, Check, CheckCircle, Copy, Sparkles } from "lucide-react"
+import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "../ui/button"
-import { Separator } from "../ui/separator"
 import { Badge } from "../ui/badge"
 import useHomeData from "@/utils/useHomeData"
-import { useState } from "react"
+import SparkCard from "../card"
+import { useCallback } from "react"
+import { useNavigate } from "@tanstack/react-router"
+
+
+const content = '"Hello! We have received your request and it is being processed. You will receive an update within 24 hours..."'
+const status = 'Productive'
 
 const TurnEmailIntoProductivity = () => {
-    const [copied, setCopied] = useState(false);
   const {stats} = useHomeData();
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText('"Hello! We have received your request and it is being processed. You will receive an update within 24 hours..."');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const navigate = useNavigate()
+    const click = useCallback(() => {
+        navigate({to: '/quickStart'})
+    },[])
     return (
         <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
@@ -34,7 +37,7 @@ const TurnEmailIntoProductivity = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button className="px-8 py-6">
+            <Button className="px-8 py-6" onClick={click}>
               Get Started
               <ArrowRight className="h-5 w-5" />
             </Button>
@@ -49,46 +52,7 @@ const TurnEmailIntoProductivity = () => {
           </div>
           <div className="relative max-w-5xl mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-rose-500/20 to-red-600/20 rounded-3xl blur-3xl"></div>
-            <div className="relative shadow-2xl">
-              <div className="bg-neutral-900 rounded-2xl p-6 border border-neutral-700">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  </div>
-                  <div className="text-slate-400 text-sm">EmailAI Pro</div>
-                </div>
-                <div className="space-y-3 bg-neutral-800 rounded-lg">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-800">
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <span className="font-light">Email classified as: <span className="text-green-400 font-semibold">Productive</span></span>
-                    </div>
-                    <Badge className="bg-green-500/10 text-green-400">95% confidence</Badge>
-                  </div>
-                    <Separator/>
-                  
-                  <div className="p-3 bg-neutral-800 rounded-lg relative">
-                    <div className="font-light text-sm p-3 rounded">
-                      "Hello! We have received your request and it is being processed. You will receive an update within 24 hours..."
-                    </div>
-                    <Button
-                      onClick={handleCopy}
-                      variant="ghost"
-                      size="icon"
-                      className="absolute top-2 right-2"
-                    >
-                      {copied ? (
-                        <Check className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
+           <SparkCard status={status} content={content} confidence="95"/>
           </div>
         </div>
       </section>
