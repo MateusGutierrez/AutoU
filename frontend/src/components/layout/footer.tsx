@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear()
     
     return (
-        <footer className="bg-muted border-t">
+        <footer className="bg-neutral-900">
             <div className="mx-auto py-8">
                 <div className="flex justify-between mb-6 px-8">
                     <div className="space-y-3 w-full flex flex-col items-start">
@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
                                 </Button>
                                 <Button variant="outline" size="icon" className="h-9 w-9">
                                     <a 
-                                        href="mailto:seu-email@exemplo.com" 
+                                        href="mailto:mateusgutierrez9@gmail.com" 
                                         aria-label="Email"
                                         className="flex items-center justify-center w-full h-full"
                                     >
