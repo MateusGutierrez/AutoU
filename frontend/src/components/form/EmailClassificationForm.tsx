@@ -1,10 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { useState } from "react"
-import { Upload, FileText, Loader2 } from "lucide-react"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import { Upload, FileText, Loader2 } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -13,36 +13,35 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { EmailClassificationFormSchema } from "@/schemas/emailClassificationForm"
-import type z from "zod"
-
+} from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { EmailClassificationFormSchema } from '@/schemas/emailClassificationForm';
+import type z from 'zod';
 
 interface ClassificationResult {
-  category: "Productive" | "Unproductive"
-  confidence: number
-  suggestedResponse: string
-  processingTime?: number
+  category: 'Productive' | 'Unproductive';
+  confidence: number;
+  suggestedResponse: string;
+  processingTime?: number;
 }
 
 export function EmailClassificationForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<ClassificationResult | null>(null)
-  const [activeTab, setActiveTab] = useState("text")
+  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState<ClassificationResult | null>(null);
+  const [activeTab, setActiveTab] = useState('text');
 
   const form = useForm<z.infer<typeof EmailClassificationFormSchema>>({
     resolver: zodResolver(EmailClassificationFormSchema),
     defaultValues: {
-      inputMethod: "text",
-      emailText: "",
+      inputMethod: 'text',
+      emailText: '',
     },
-  })
+  });
 
-  const watchInputMethod = form.watch("inputMethod")
+  const watchInputMethod = form.watch('inputMethod');
 
   async function classifyEmail(content: string): Promise<ClassificationResult> {
     const response = await fetch('/api/classify-email', {
@@ -51,105 +50,101 @@ export function EmailClassificationForm() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ content }),
-    })
-    
+    });
+
     if (!response.ok) {
-      throw new Error('Error classifying email')
+      throw new Error('Error classifying email');
     }
-    
-    return await response.json()
+
+    return await response.json();
   }
 
   async function onSubmit(data: z.infer<typeof EmailClassificationFormSchema>) {
-    setIsLoading(true)
-    setResult(null)
+    setIsLoading(true);
+    setResult(null);
 
     try {
-      let emailContent = ""
-      
-      if (data.inputMethod === "text" && data.emailText) {
-        emailContent = data.emailText
-      } else if (data.inputMethod === "file" && data.file) {
-        if (data.file.type === "text/plain") {
-          emailContent = await data.file.text()
-        } 
-        else if (data.file.type === "application/pdf") {
-          const formData = new FormData()
-          formData.append('file', data.file)
-          
+      let emailContent = '';
+
+      if (data.inputMethod === 'text' && data.emailText) {
+        emailContent = data.emailText;
+      } else if (data.inputMethod === 'file' && data.file) {
+        if (data.file.type === 'text/plain') {
+          emailContent = await data.file.text();
+        } else if (data.file.type === 'application/pdf') {
+          const formData = new FormData();
+          formData.append('file', data.file);
+
           const response = await fetch('/api/process-pdf', {
             method: 'POST',
             body: formData,
-          })
-          
+          });
+
           if (!response.ok) {
-            throw new Error('Error processing PDF')
+            throw new Error('Error processing PDF');
           }
-          
-          const { content } = await response.json()
-          emailContent = content
+
+          const { content } = await response.json();
+          emailContent = content;
         }
       }
 
       if (!emailContent.trim()) {
-        throw new Error('Email content is empty')
+        throw new Error('Email content is empty');
       }
 
-      const classificationResult = await classifyEmail(emailContent)
-      setResult(classificationResult)
+      const classificationResult = await classifyEmail(emailContent);
+      setResult(classificationResult);
 
-      toast.success("Email classified successfully!", {
+      toast.success('Email classified successfully!', {
         description: `Category: ${classificationResult.category}`,
-      })
+      });
     } catch (error) {
-      console.error('Error:', error)
-      toast.error("Error processing email", {
-        description: error instanceof Error ? error.message : "Try again",
-      })
+      console.error('Error:', error);
+      toast.error('Error processing email', {
+        description: error instanceof Error ? error.message : 'Try again',
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      const validTypes = ['text/plain', 'application/pdf']
+      const validTypes = ['text/plain', 'application/pdf'];
       if (!validTypes.includes(file.type)) {
-        toast.error("Invalid file format", {
-          description: "Only .txt and .pdf files are supported",
-        })
-        return
+        toast.error('Invalid file format', {
+          description: 'Only .txt and .pdf files are supported',
+        });
+        return;
       }
-      if (file.size > 5 * 1024 * 1024) { // 5MB
-        toast.error("File too large", {
-          description: "File must be less than 5MB",
-        })
-        return
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB
+        toast.error('File too large', {
+          description: 'File must be less than 5MB',
+        });
+        return;
       }
-      form.setValue("file", file)
+      form.setValue('file', file);
     }
-  }
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            Automatic Email Classification
-          </CardTitle>
-          <CardDescription>
-            Submit an email for automatic classification
-          </CardDescription>
+          <CardTitle className="flex items-center gap-2">Automatic Email Classification</CardTitle>
+          <CardDescription>Submit an email for automatic classification</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <Tabs 
-                value={activeTab} 
-                onValueChange={(value) => {
-                  setActiveTab(value)
-                  form.setValue("inputMethod", value as "text" | "file")
+              <Tabs
+                value={activeTab}
+                onValueChange={value => {
+                  setActiveTab(value);
+                  form.setValue('inputMethod', value as 'text' | 'file');
                 }}
                 className="w-full"
               >
@@ -163,7 +158,7 @@ export function EmailClassificationForm() {
                     Upload File
                   </TabsTrigger>
                 </TabsList>
-                
+
                 <TabsContent value="text" className="space-y-4">
                   <FormField
                     control={form.control}
@@ -178,15 +173,13 @@ export function EmailClassificationForm() {
                             {...field}
                           />
                         </FormControl>
-                        <FormDescription>
-                          Enter the full email text for analysis
-                        </FormDescription>
+                        <FormDescription>Enter the full email text for analysis</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </TabsContent>
-                
+
                 <TabsContent value="file" className="space-y-4">
                   <FormField
                     control={form.control}
@@ -206,7 +199,7 @@ export function EmailClassificationForm() {
                               <Upload className="h-8 w-8 text-muted-foreground" />
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
-                                  {form.watch("file")?.name || "Click to select a file"}
+                                  {form.watch('file')?.name || 'Click to select a file'}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                   or drag and drop here
@@ -215,9 +208,7 @@ export function EmailClassificationForm() {
                             </div>
                           </div>
                         </FormControl>
-                        <FormDescription>
-                          Accepted formats: .txt, .pdf (max 5MB)
-                        </FormDescription>
+                        <FormDescription>Accepted formats: .txt, .pdf (max 5MB)</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -225,19 +216,14 @@ export function EmailClassificationForm() {
                 </TabsContent>
               </Tabs>
 
-              <Button 
-                type="submit" 
-                disabled={isLoading}
-                className="w-fit flex mx-auto"
-                size="lg"
-              >
+              <Button type="submit" disabled={isLoading} className="w-fit flex mx-auto" size="lg">
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Classifying Email...
                   </>
                 ) : (
-                  "Classify Email"
+                  'Classify Email'
                 )}
               </Button>
             </form>
@@ -248,8 +234,8 @@ export function EmailClassificationForm() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Badge 
-                variant={result.category === "Productive" ? "default" : "secondary"}
+              <Badge
+                variant={result.category === 'Productive' ? 'default' : 'secondary'}
                 className="text-sm"
               >
                 {result.category}
@@ -272,5 +258,5 @@ export function EmailClassificationForm() {
         </Card>
       )}
     </div>
-  )
+  );
 }

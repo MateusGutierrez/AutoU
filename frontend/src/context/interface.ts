@@ -1,4 +1,3 @@
-
 export interface Stats {
   total: number;
   productive: number;
@@ -7,7 +6,7 @@ export interface Stats {
 
 export interface ClassificationResponse {
   classification: {
-    category: "productive" | "unproductive";
+    category: 'productive' | 'unproductive';
     confidence: number;
   };
   [key: string]: any;
