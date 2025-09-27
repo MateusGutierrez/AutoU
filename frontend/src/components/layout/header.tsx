@@ -21,6 +21,9 @@ const Header: React.FC = () => {
           <Link to="/quickStart" className="[&.active]:font-bold">
             Quick Start
           </Link>{' '}
+          <Link to="/history" className="[&.active]:font-bold">
+            History
+          </Link>{' '}
         </div>
       </div>
       <Separator />

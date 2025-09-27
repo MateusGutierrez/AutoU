@@ -53,7 +53,7 @@ const TurnEmailIntoProductivity = () => {
         </div>
         <div className="relative mx-auto max-w-5xl">
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-rose-500/20 to-red-600/20 blur-3xl"></div>
-          <SparkCard status={status} content={content} confidence={95} />
+          <SparkCard status={status} content={content} confidence={0.95} />
         </div>
       </div>
     </section>

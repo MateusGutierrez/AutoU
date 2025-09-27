@@ -8,70 +8,88 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root';
-import { Route as QuickStartRouteImport } from './routes/quickStart';
-import { Route as IndexRouteImport } from './routes/index';
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as QuickStartRouteImport } from './routes/quickStart'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as IndexRouteImport } from './routes/index'
 
 const QuickStartRoute = QuickStartRouteImport.update({
   id: '/quickStart',
   path: '/quickStart',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
-  '/quickStart': typeof QuickStartRoute;
+  '/': typeof IndexRoute
+  '/history': typeof HistoryRoute
+  '/quickStart': typeof QuickStartRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
-  '/quickStart': typeof QuickStartRoute;
+  '/': typeof IndexRoute
+  '/history': typeof HistoryRoute
+  '/quickStart': typeof QuickStartRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  '/': typeof IndexRoute;
-  '/quickStart': typeof QuickStartRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/history': typeof HistoryRoute
+  '/quickStart': typeof QuickStartRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/quickStart';
-  fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/quickStart';
-  id: '__root__' | '/' | '/quickStart';
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/history' | '/quickStart'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/history' | '/quickStart'
+  id: '__root__' | '/' | '/history' | '/quickStart'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  QuickStartRoute: typeof QuickStartRoute;
+  IndexRoute: typeof IndexRoute
+  HistoryRoute: typeof HistoryRoute
+  QuickStartRoute: typeof QuickStartRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/quickStart': {
-      id: '/quickStart';
-      path: '/quickStart';
-      fullPath: '/quickStart';
-      preLoaderRoute: typeof QuickStartRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/quickStart'
+      path: '/quickStart'
+      fullPath: '/quickStart'
+      preLoaderRoute: typeof QuickStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HistoryRoute: HistoryRoute,
   QuickStartRoute: QuickStartRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
