@@ -20,6 +20,26 @@ export const EmailProvider = ({ children }: EmailProviderProps) => {
     },
     [result]
   );
+  const classifyByFile = useCallback(
+    async (file: File) => {
+      try {
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await api.post('/classify-file', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setResult(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [result]
+  );
   const removeResult = useCallback(() => {
     setResult(null);
   }, [result]);
@@ -27,6 +47,7 @@ export const EmailProvider = ({ children }: EmailProviderProps) => {
     <EmailContext.Provider
       value={{
         classifyByText,
+        classifyByFile,
         loading,
         result,
         removeResult,

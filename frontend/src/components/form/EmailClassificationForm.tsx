@@ -23,7 +23,7 @@ import SparkCard from '../card';
 
 export function EmailClassificationForm() {
   const [activeTab, setActiveTab] = useState('text');
-  const { classifyByText, loading, result, removeResult } = useEmail();
+  const { classifyByText, loading, result, removeResult, classifyByFile } = useEmail();
   const form = useForm<z.infer<typeof EmailClassificationFormSchema>>({
     resolver: zodResolver(EmailClassificationFormSchema),
     defaultValues: {
@@ -35,6 +35,9 @@ export function EmailClassificationForm() {
   async function onSubmit(data: z.infer<typeof EmailClassificationFormSchema>) {
     if (data.inputMethod === 'text') {
       classifyByText(data.emailText as string);
+    }
+    if (data.inputMethod === 'file') {
+      classifyByFile(data.file);
     }
   }
 
@@ -120,38 +123,46 @@ export function EmailClassificationForm() {
                 </TabsContent>
 
                 <TabsContent value="file" className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="file"
-                    render={() => (
-                      <FormItem className="mx-auto flex w-fit flex-col items-center py-8 text-center">
-                        <FormLabel className="text-center">File Upload</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <input
-                              type="file"
-                              accept=".txt,.pdf"
-                              onChange={handleFileChange}
-                              className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-                            />
-                            <div className="border-muted-foreground/25 hover:border-muted-foreground/50 flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-4 transition-colors">
-                              <Upload className="text-muted-foreground h-8 w-8" />
-                              <div className="flex flex-col">
-                                <span className="text-sm font-medium">
-                                  {form.watch('file')?.name || 'Click to select a file'}
-                                </span>
-                                <span className="text-muted-foreground text-xs">
-                                  or drag and drop here
-                                </span>
+                  {result ? (
+                    <SparkCard
+                      content={result.suggested_response}
+                      status={result.category}
+                      confidence={result.confidence}
+                    />
+                  ) : (
+                    <FormField
+                      control={form.control}
+                      name="file"
+                      render={() => (
+                        <FormItem className="mx-auto flex w-fit flex-col items-center py-8 text-center">
+                          <FormLabel className="text-center">File Upload</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <input
+                                type="file"
+                                accept=".txt,.pdf"
+                                onChange={handleFileChange}
+                                className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+                              />
+                              <div className="border-muted-foreground/25 hover:border-muted-foreground/50 flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-4 transition-colors">
+                                <Upload className="text-muted-foreground h-8 w-8" />
+                                <div className="flex flex-col">
+                                  <span className="text-sm font-medium">
+                                    {form.watch('file')?.name || 'Click to select a file'}
+                                  </span>
+                                  <span className="text-muted-foreground text-xs">
+                                    or drag and drop here
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </FormControl>
-                        <FormDescription>Accepted formats: .txt, .pdf (max 5MB)</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          </FormControl>
+                          <FormDescription>Accepted formats: .txt, .pdf (max 5MB)</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
                 </TabsContent>
               </Tabs>
               {result ? (
