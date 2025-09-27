@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { Separator } from '../ui/separator';
-import { Flame } from 'lucide-react';
+import logo from '@/assets/sparkmail.png';
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-4">
           <Link to="/" className="[&.active]:font-bold">
             <div className="flex items-center gap-1 pr-2">
-              <Flame />
+              <img src={logo} alt="logo" width={24} />
               <h1 className="scroll-m-20 text-center text-lg font-extrabold tracking-tight text-balance">
                 SparkMail
               </h1>

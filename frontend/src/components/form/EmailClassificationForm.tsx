@@ -31,7 +31,6 @@ export function EmailClassificationForm() {
       emailText: '',
     },
   });
-  const watchInputMethod = form.watch('inputMethod');
   async function onSubmit(data: z.infer<typeof EmailClassificationFormSchema>) {
     if (data.inputMethod === 'text') {
       classifyByText(data.emailText as string);
@@ -65,7 +64,7 @@ export function EmailClassificationForm() {
     form.reset();
   }, [result]);
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-8">
+    <div className="mx-auto w-full max-w-5xl space-y-8">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">Automatic Email Classification</CardTitle>
@@ -93,7 +92,7 @@ export function EmailClassificationForm() {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="text" className="space-y-6 py-8">
+                <TabsContent value="text" className="space-y-6 py-6">
                   {result ? (
                     <SparkCard
                       content={result.suggested_response}
@@ -122,7 +121,7 @@ export function EmailClassificationForm() {
                   )}
                 </TabsContent>
 
-                <TabsContent value="file" className="space-y-4">
+                <TabsContent value="file" className="space-y-6 py-6">
                   {result ? (
                     <SparkCard
                       content={result.suggested_response}
@@ -134,7 +133,7 @@ export function EmailClassificationForm() {
                       control={form.control}
                       name="file"
                       render={() => (
-                        <FormItem className="mx-auto flex w-fit flex-col items-center py-8 text-center">
+                        <FormItem className="mx-auto flex w-fit flex-col items-center text-center">
                           <FormLabel className="text-center">File Upload</FormLabel>
                           <FormControl>
                             <div className="relative">

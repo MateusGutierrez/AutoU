@@ -5,6 +5,7 @@ import useHomeData from '@/utils/useHomeData';
 import SparkCard from '../card';
 import { useCallback } from 'react';
 import { useNavigate } from '@tanstack/react-router';
+import logo from '@/assets/sparkmail.png';
 
 const content =
   '"Hello! We have received your request and it is being processed. You will receive an update within 24 hours..."';
@@ -24,12 +25,15 @@ const TurnEmailIntoProductivity = () => {
           Powered by Open AI
         </Badge>
 
-        <h1 className="mb-8 text-5xl leading-tight font-bold md:text-7xl">
-          Turn Emails into
-          <span className="bg-gradient-to-r from-rose-800 via-rose-700 to-rose-600 bg-clip-text text-transparent">
-            {' '}
-            Productivity
-          </span>
+        <h1 className="mb-8 text-4xl leading-tight font-bold md:text-5xl">
+          Turn Emails into Productivity with
+          <div className="flex items-center justify-center">
+            <img src={logo} alt="logo" className="w-12 md:w-20" />
+            <span className="bg-gradient-to-r from-rose-800 via-rose-700 to-rose-600 bg-clip-text text-transparent text-5xl sm:text-7xl">
+              {' '}
+              SparkMail
+            </span>
+          </div>
         </h1>
 
         <p className="mx-auto mb-12 max-w-4xl text-xl leading-relaxed md:text-2xl">
