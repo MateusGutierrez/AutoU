@@ -48,7 +48,7 @@ export function EmailClassificationForm() {
         return;
       }
     },
-    [form, classifyByFile, classifyByText]
+    [form, classifyByFile, classifyByText, selectedFile]
   );
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,12 +73,12 @@ export function EmailClassificationForm() {
       form.setValue('file', file);
       form.setValue('emailText', '');
     }
-  }, []);
+  }, [setSelectedFile, form]);
 
   const removeFile = useCallback(() => {
     setSelectedFile(null);
     form.setValue('file', undefined);
-  }, []);
+  }, [form]);
 
   const clear = useCallback(() => {
     removeResult();
