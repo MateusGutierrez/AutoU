@@ -1,11 +1,9 @@
 import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
-import { Link } from '@tanstack/react-router';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-neutral-900">
       <div className="mx-auto py-8">

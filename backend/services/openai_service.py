@@ -57,7 +57,7 @@ class OpenAIService:
         
         Sua tarefa é classificar emails em duas categorias principais:
         
-        1. PRODUTIVO: Emails que requerem ação, resposta específica ou acompanhamento:
+        1. Produtivo: Emails que requerem ação, resposta específica ou acompanhamento:
            - Solicitações de suporte técnico
            - Dúvidas sobre produtos/serviços
            - Pedidos de informação específica
@@ -68,7 +68,7 @@ class OpenAIService:
            - Comunicações que requerem tomada de decisão
            - Perguntas que precisam de informações factuais específicas (números de emergência, endereços, horários, etc.)
         
-        2. IMPRODUTIVO: Emails que não necessitam ação imediata ou são informativos:
+        2. Improdutivo: Emails que não necessitam ação imediata ou são informativos:
            - Felicitações e mensagens comemorativas (aniversário, natal, ano novo, etc.)
            - Agradecimentos gerais
            - Comunicações sociais ou casuais
@@ -85,7 +85,7 @@ class OpenAIService:
         
         Responda APENAS em formato JSON válido com esta estrutura exata:
         {
-            "category": "PRODUTIVO" ou "IMPRODUTIVO",
+            "category": "Produtivo" ou "Improdutivo",
             "confidence": valor entre 0.0 e 1.0,
             "reasoning": "explicação detalhada da classificação em português",
             "is_urgent": true ou false,
@@ -95,7 +95,7 @@ class OpenAIService:
         """
     
     def _get_response_system_prompt(self, category: str) -> str:
-        if category == "PRODUTIVO":
+        if category == "Produtivo":
             return """
             Você é um assistente profissional que gera respostas cordiais e eficientes para emails produtivos.
             
@@ -126,7 +126,7 @@ class OpenAIService:
             """
         else:
             return """
-            Você é um assistente que gera respostas cordiais para emails improdutivos.
+            Você é um assistente que gera respostas cordiais para emails Improdutivos.
             
             CAPACIDADES ESPECIAIS PARA CELEBRAÇÕES:
             - Reconheça e responda apropriadamente a: feliz aniversário, feliz natal, feliz ano novo, parabéns, felicitações, etc.
@@ -173,8 +173,8 @@ class OpenAIService:
         3. Avalie se o email requer ação específica ou é apenas informativo
         4. Determine o nível de urgência baseado no conteúdo e indicadores
         5. Identifique se é uma pergunta factual, mensagem comemorativa ou email padrão
-        6. Para perguntas como "qual telefone ligar em emergência" = classificar como PRODUTIVO
-        7. Para mensagens como "feliz aniversário", "feliz natal" = classificar como IMPRODUTIVO
+        6. Para perguntas como "qual telefone ligar em emergência" = classificar como Produtivo
+        7. Para mensagens como "feliz aniversário", "feliz natal, quero um café, quero uma bebida, um suco" = classificar como Improdutivo
         8. Forneça reasoning detalhado explicando sua decisão
         
         Classifique agora:

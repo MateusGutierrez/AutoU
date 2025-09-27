@@ -3,8 +3,8 @@ from typing import Dict, Any, List, Optional
 from enum import Enum
 
 class EmailCategory(str, Enum):
-    PRODUCTIVE = "PRODUTIVO"
-    UNPRODUCTIVE = "IMPRODUTIVO"
+    PRODUCTIVE = "Produtivo"
+    UNPRODUCTIVE = "Improdutivo"
 
 class SentimentIndicators(BaseModel):
     has_negative: bool

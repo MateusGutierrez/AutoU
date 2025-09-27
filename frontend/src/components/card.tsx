@@ -1,4 +1,4 @@
-import { Check, CheckCircle, Copy } from 'lucide-react';
+import { BrushCleaning, Check, CheckCircle, Copy } from 'lucide-react';
 import { Button } from './ui/button';
 import { useCallback, useState } from 'react';
 import { Separator } from './ui/separator';
@@ -8,9 +8,10 @@ interface Props {
   status: string;
   content: string;
   confidence?: number;
+  clear: () => void;
 }
 
-const SparkCard: React.FC<Props> = ({ status, content, confidence }) => {
+const SparkCard: React.FC<Props> = ({ status, content, confidence, clear }) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = useCallback(async () => {
     await navigator.clipboard.writeText(content);
@@ -41,19 +42,24 @@ const SparkCard: React.FC<Props> = ({ status, content, confidence }) => {
                 {confidence * 100}% confidence
               </Badge>
             )}
+            <div className="absolute top-2 right-2 flex gap-2">
+              <Button onClick={handleCopy} variant="ghost" size="icon">
+                {copied ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+
+              <Button type="button" onClick={clear} variant="ghost" size="icon">
+                <BrushCleaning className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <Separator />
 
           <div className="relative rounded-lg bg-neutral-800 p-3">
             <div className="rounded p-3 text-sm font-light">{content}</div>
-            <Button
-              onClick={handleCopy}
-              variant="ghost"
-              size="icon"
-              className="absolute top-2 right-2"
-            >
-              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-            </Button>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useCallback, useState } from 'react';
-import { Upload, FileText, Loader2 } from 'lucide-react';
+import { FileText, Loader2, X, Send, Paperclip } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -10,20 +10,20 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EmailClassificationFormSchema } from '@/schemas/emailClassificationForm';
 import type z from 'zod';
 import { useEmail } from '@/hooks/useEmail';
 import SparkCard from '../card';
+import logo from '@/assets/sparkmail.png';
 
 export function EmailClassificationForm() {
-  const [activeTab, setActiveTab] = useState('text');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { classifyByText, loading, result, removeResult, classifyByFile } = useEmail();
+
   const form = useForm<z.infer<typeof EmailClassificationFormSchema>>({
     resolver: zodResolver(EmailClassificationFormSchema),
     defaultValues: {
@@ -31,17 +31,29 @@ export function EmailClassificationForm() {
       emailText: '',
     },
   });
-  async function onSubmit(data: z.infer<typeof EmailClassificationFormSchema>) {
-    if (data.inputMethod === 'text') {
-      classifyByText(data.emailText as string);
-    }
-    if (data.inputMethod === 'file') {
-      classifyByFile(data.file);
-    }
-  }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSubmit = useCallback(
+    (data: z.infer<typeof EmailClassificationFormSchema>) => {
+      if (selectedFile) {
+        form.setValue('inputMethod', 'file');
+        form.setValue('file', selectedFile);
+        classifyByFile(selectedFile);
+      } else if (data.emailText?.trim()) {
+        form.setValue('inputMethod', 'text');
+        classifyByText(data.emailText);
+      } else {
+        toast.error('Required content', {
+          description: 'Please enter text or select a file',
+        });
+        return;
+      }
+    },
+    [form, classifyByFile, classifyByText]
+  );
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    form.setValue('inputMethod', 'file');
     if (file) {
       const validTypes = ['text/plain', 'application/pdf'];
       if (!validTypes.includes(file.type)) {
@@ -56,127 +68,131 @@ export function EmailClassificationForm() {
         });
         return;
       }
+
+      setSelectedFile(file);
       form.setValue('file', file);
+      form.setValue('emailText', '');
     }
-  };
+  }, []);
+
+  const removeFile = useCallback(() => {
+    setSelectedFile(null);
+    form.setValue('file', undefined);
+  }, []);
+
   const clear = useCallback(() => {
     removeResult();
-    form.reset();
-  }, [result]);
+    setSelectedFile(null);
+    form.reset({
+      inputMethod: 'text',
+      emailText: '',
+    });
+  }, [removeResult, form]);
+
+  const isFileSelected = selectedFile !== null
+  const hasTextContent = form.watch('emailText')?.trim() !== ''
+  const canSubmit =  (isFileSelected || hasTextContent) && !loading
+
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">Automatic Email Classification</CardTitle>
-          <CardDescription>Submit an email for automatic classification</CardDescription>
+        <CardHeader className="flex items-center justify-center gap-2">
+          <img src={logo} alt="logo" width={38} />
+          <CardTitle className="flex items-center justify-center gap-2 text-3xl text-center">
+            Automatic Email Classification
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <Tabs
-                value={activeTab}
-                onValueChange={value => {
-                  setActiveTab(value);
-                  form.setValue('inputMethod', value as 'text' | 'file');
-                }}
-                className="w-full"
-              >
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="text" className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Enter Text
-                  </TabsTrigger>
-                  <TabsTrigger value="file" className="flex items-center gap-2">
-                    <Upload className="h-4 w-4" />
-                    Upload File
-                  </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="text" className="space-y-6 py-6">
-                  {result ? (
-                    <SparkCard
-                      content={result.suggested_response}
-                      status={result.category}
-                      confidence={result.confidence}
-                    />
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative">
+              {result ? (
+                <SparkCard
+                  content={result.suggested_response}
+                  status={result.category}
+                  confidence={result.confidence}
+                  clear={clear}
+                />
+              ) : (
+                <div className="space-y-4">
+                  {isFileSelected ? (
+                    <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/50 p-4">
+                      <FileText className="h-5 w-5 text-muted-foreground" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">{selectedFile.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {(selectedFile.size / 1024).toFixed(1)} KB
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={removeFile}
+                        disabled={loading}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                       <Button
+                                type="submit"
+                                disabled={!canSubmit}
+                                className="flex items-center justify-center "
+                                size="icon"
+                              >
+                                {loading ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Send className="h-4 w-4" />
+                                )}
+                              </Button>
+                    </div>
                   ) : (
                     <FormField
                       control={form.control}
                       name="emailText"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email Content</FormLabel>
                           <FormControl>
-                            <Textarea
-                              placeholder="Paste the email content you want to classify here..."
-                              className="min-h-[100px] resize-y"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormDescription>Enter the full email text for analysis</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  )}
-                </TabsContent>
-
-                <TabsContent value="file" className="space-y-6 py-6">
-                  {result ? (
-                    <SparkCard
-                      content={result.suggested_response}
-                      status={result.category}
-                      confidence={result.confidence}
-                    />
-                  ) : (
-                    <FormField
-                      control={form.control}
-                      name="file"
-                      render={() => (
-                        <FormItem className="mx-auto flex w-fit flex-col items-center text-center">
-                          <FormLabel className="text-center">File Upload</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <input
-                                type="file"
-                                accept=".txt,.pdf"
-                                onChange={handleFileChange}
-                                className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-                              />
-                              <div className="border-muted-foreground/25 hover:border-muted-foreground/50 flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-4 transition-colors">
-                                <Upload className="text-muted-foreground h-8 w-8" />
-                                <div className="flex flex-col">
-                                  <span className="text-sm font-medium">
-                                    {form.watch('file')?.name || 'Click to select a file'}
-                                  </span>
-                                  <span className="text-muted-foreground text-xs">
-                                    or drag and drop here
-                                  </span>
-                                </div>
+                            <div className="relative cursor-pointer">
+                              <div className="absolute left-3 bottom-3 cursor-pointer">
+                                <input
+                                  type="file"
+                                  accept=".txt,.pdf"
+                                  onChange={handleFileChange}
+                                  className="absolute inset-0 z-10 h-6 w-6 cursor-pointer opacity-0"
+                                  title="Select file"
+                                />
+                                <Paperclip className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer" />
                               </div>
+                              <Textarea
+                                placeholder="Paste the email content you want to classify here..."
+                                className="min-h-[120px] resize-y"
+                                {...field}
+                                onClick={() => form.setValue('inputMethod', 'text')}
+                              />
+                              <Button
+                                type="submit"
+                                disabled={!canSubmit}
+                                className="mx-auto flex items-center justify-center absolute bottom-3 right-3"
+                                size="icon"
+                              >
+                                {loading ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Send className="h-4 w-4" />
+                                )}
+                              </Button>
                             </div>
                           </FormControl>
-                          <FormDescription>Accepted formats: .txt, .pdf (max 5MB)</FormDescription>
+                          <FormDescription>
+                            Type the email text or click the upload icon to select a file (.txt,
+                            .pdf - max. 5MB)
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   )}
-                </TabsContent>
-              </Tabs>
-              {result ? (
-                <Button
-                  onClick={clear}
-                  className="mx-auto flex w-fit"
-                  size="lg"
-                  variant={'secondary'}
-                >
-                  Clear
-                </Button>
-              ) : (
-                <Button type="submit" disabled={loading} className="mx-auto flex w-fit" size="lg">
-                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Classify Email'}
-                </Button>
+                </div>
               )}
             </form>
           </Form>

@@ -13,7 +13,7 @@ class ClassificationService:
         
         try:
             result = self.openai_service.classify_email(email_text, features)
-            category = result.get("category", "IMPRODUTIVO")
+            category = result.get("category", "Improdutivo")
             confidence = float(result.get("confidence", 0.8))
             reasoning = result.get("reasoning", "Classificação baseada no conteúdo do email")
             is_urgent = result.get("is_urgent", False)
@@ -76,13 +76,13 @@ class ClassificationService:
         is_urgent = features.has_urgency_indicators
         
         if score >= 50:
-            category = "PRODUTIVO"
+            category = "Produtivo"
             confidence = min(score / 100, 0.95)
-            reasoning = f"Email classificado como PRODUTIVO baseado em: {', '.join(reasons[:3])}"
+            reasoning = f"Email classificado como Produtivo baseado em: {', '.join(reasons[:3])}"
         else:
-            category = "IMPRODUTIVO"
+            category = "Improdutivo"
             confidence = max(1 - (score / 100), 0.6)
-            reasoning = f"Email classificado como IMPRODUTIVO: {', '.join(reasons[:2]) if reasons else 'comunicação geral'}"
+            reasoning = f"Email classificado como Improdutivo: {', '.join(reasons[:2]) if reasons else 'comunicação geral'}"
         
         suggested_response = self._generate_fallback_response(category, is_urgent, features)
         
@@ -96,7 +96,7 @@ class ClassificationService:
         )
     
     def _generate_fallback_response(self, category: str, is_urgent: bool, features: EmailFeatures) -> str:
-        if category == "PRODUTIVO":
+        if category == "Produtivo":
             if is_urgent:
                 return """Prezado(a),
 Recebemos sua mensagem e identificamos a urgência da situação. Nossa equipe foi notificada com prioridade máxima e está analisando sua solicitação imediatamente.
