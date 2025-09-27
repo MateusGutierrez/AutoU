@@ -7,7 +7,7 @@ export const Route = createFileRoute('/quickStart')({
 
 function RouteComponent() {
   return (
-    <div className="p-2 flex-1 items-center justify-center py-20">
+    <div className="flex-1 items-center justify-center p-2 py-20">
       <EmailClassificationForm />
     </div>
   );

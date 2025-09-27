@@ -4,30 +4,30 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 const FeaturesThatMakeDifference = () => {
   const { features } = useHomeData();
   return (
-    <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-neutral-800/30 rounded-xl">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Features That Make a Difference</h2>
-          <p className="text-xl max-w-3xl mx-auto font-light">
+    <section id="features" className="rounded-xl bg-neutral-800/30 px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-16 text-center">
+          <h2 className="mb-6 text-4xl font-bold md:text-5xl">Features That Make a Difference</h2>
+          <p className="mx-auto max-w-3xl text-xl font-light">
             Cutting-edge technology developed specifically for the Brazilian market
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <Card
                 key={index}
-                className="bg-neutral-800/50 border hover:bg-neutral-800/70 transition-all duration-300 hover:scale-105"
+                className="border bg-neutral-800/50 transition-all duration-300 hover:scale-105 hover:bg-neutral-800/70"
               >
                 <CardHeader>
-                  <div className="h-14 w-14 bg-gradient-to-r from-rose-800 via-rose-700 to-rose-600 rounded-xl flex items-center justify-center mb-4">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-r from-rose-800 via-rose-700 to-rose-600">
                     <Icon className="h-8 w-8" />
                   </div>
                   <CardTitle className="text-xl">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="font-light leading-relaxed">
+                  <CardDescription className="leading-relaxed font-light">
                     {feature.description}
                   </CardDescription>
                 </CardContent>

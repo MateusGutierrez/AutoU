@@ -3,24 +3,17 @@ export interface Stats {
   productive: number;
   unproductive: number;
 }
-
-export interface ClassificationResponse {
-  classification: {
-    category: 'productive' | 'unproductive';
-    confidence: number;
-  };
-  [key: string]: any;
+export interface ClassificationResult {
+  category: string;
+  confidence: number;
+  suggested_response: string;
+  is_urgent: boolean;
 }
 
 export interface EmailContextType {
-  stats: Stats;
+  classifyByText: (text: string) => void;
   loading: boolean;
-  result: ClassificationResponse | null;
-  error: string | null;
-  classifyEmail: (emailData: Record<string, any>) => Promise<void>;
-  classifyFromFile: (formData: FormData) => Promise<void>;
-  resetResult: () => void;
-  resetError: () => void;
+  result: ClassificationResult | null;
 }
 
 export interface EmailProviderProps {

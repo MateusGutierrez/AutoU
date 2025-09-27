@@ -21,21 +21,21 @@ const SparkCard: React.FC<Props> = ({ status, content, confidence }) => {
   };
   return (
     <div className="relative shadow-2xl">
-      <div className="bg-neutral-900 rounded-2xl p-6 border border-neutral-700">
-        <div className="flex items-center gap-3 mb-4">
+      <div className="rounded-2xl border border-neutral-700 bg-neutral-900 p-6">
+        <div className="mb-4 flex items-center gap-3">
           <div className="flex gap-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+            <div className="h-3 w-3 rounded-full bg-red-500"></div>
+            <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+            <div className="h-3 w-3 rounded-full bg-green-500"></div>
           </div>
-          <div className="text-slate-400 text-sm">EmailAI Pro</div>
+          <div className="text-sm text-slate-400">EmailAI Pro</div>
         </div>
-        <div className="space-y-3 bg-neutral-800 rounded-lg">
-          <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-800">
+        <div className="space-y-3 rounded-lg bg-neutral-800">
+          <div className="flex items-center justify-between rounded-lg bg-neutral-800 p-3">
             <div className="flex items-center gap-3">
               <CheckCircle className="h-5 w-5 text-green-400" />
               <span className="font-light">
-                Email classified as: <span className="text-green-400 font-semibold">{status}</span>
+                Email classified as: <span className="font-semibold text-green-400">{status}</span>
               </span>
             </div>
             {confidence && (
@@ -44,8 +44,8 @@ const SparkCard: React.FC<Props> = ({ status, content, confidence }) => {
           </div>
           <Separator />
 
-          <div className="p-3 bg-neutral-800 rounded-lg relative">
-            <div className="font-light text-sm p-3 rounded">{content}</div>
+          <div className="relative rounded-lg bg-neutral-800 p-3">
+            <div className="rounded p-3 text-sm font-light">{content}</div>
             <Button
               onClick={handleCopy}
               variant="ghost"

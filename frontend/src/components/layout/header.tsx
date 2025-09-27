@@ -5,10 +5,10 @@ import { Flame } from 'lucide-react';
 const Header: React.FC = () => {
   return (
     <header>
-      <div className="p-2 px-8 flex gap-2 items-center justify-between">
-        <div className="flex gap-4 items-center">
+      <div className="flex items-center justify-between gap-2 p-2 px-8">
+        <div className="flex items-center gap-4">
           <Link to="/" className="[&.active]:font-bold">
-            <div className="flex gap-1 items-center pr-2">
+            <div className="flex items-center gap-1 pr-2">
               <Flame />
               <h1 className="scroll-m-20 text-center text-lg font-extrabold tracking-tight text-balance">
                 SparkMail

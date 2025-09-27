@@ -1,3 +1,11 @@
-# Ignore artifacts:
+dist
 build
+node_modules
+.next
+.nuxt
+.vite
+*.min.js
+*.min.css
+public
 coverage
+.nyc_output

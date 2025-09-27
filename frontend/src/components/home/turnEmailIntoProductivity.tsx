@@ -17,14 +17,14 @@ const TurnEmailIntoProductivity = () => {
     navigate({ to: '/quickStart' });
   }, []);
   return (
-    <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center">
-        <Badge className="mb-6 bg-gradient-to-r from-emerald-500/10 to-blue-600/10 text-emerald-400-400 border-emerald-500/20">
-          <Sparkles className="h-4 w-4 mr-2" />
+    <section className="px-4 pt-20 pb-32 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl text-center">
+        <Badge className="text-emerald-400-400 mb-6 border-emerald-500/20 bg-gradient-to-r from-emerald-500/10 to-blue-600/10">
+          <Sparkles className="mr-2 h-4 w-4" />
           Powered by Open AI
         </Badge>
 
-        <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+        <h1 className="mb-8 text-5xl leading-tight font-bold md:text-7xl">
           Turn Emails into
           <span className="bg-gradient-to-r from-rose-800 via-rose-700 to-rose-600 bg-clip-text text-transparent">
             {' '}
@@ -32,27 +32,27 @@ const TurnEmailIntoProductivity = () => {
           </span>
         </h1>
 
-        <p className="text-xl md:text-2xl  mb-12 max-w-4xl mx-auto leading-relaxed">
+        <p className="mx-auto mb-12 max-w-4xl text-xl leading-relaxed md:text-2xl">
           The first AI platform in Brazil that automatically classifies corporate emails, suggests
           smart replies, and frees your team to focus on what really matters.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row">
           <Button className="px-8 py-6" onClick={click}>
             Get Started
             <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
+        <div className="mb-20 grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold mb-2">{stat.number}</div>
-              <div className="text-sm md:text-base font-extralight">{stat.label}</div>
+              <div className="mb-2 text-3xl font-bold md:text-4xl">{stat.number}</div>
+              <div className="text-sm font-extralight md:text-base">{stat.label}</div>
             </div>
           ))}
         </div>
-        <div className="relative max-w-5xl mx-auto">
-          <div className="absolute inset-0 bg-gradient-to-r from-rose-500/20 to-red-600/20 rounded-3xl blur-3xl"></div>
+        <div className="relative mx-auto max-w-5xl">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-rose-500/20 to-red-600/20 blur-3xl"></div>
           <SparkCard status={status} content={content} confidence="95" />
         </div>
       </div>
