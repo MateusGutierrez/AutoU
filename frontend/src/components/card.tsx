@@ -1,24 +1,22 @@
 import { Check, CheckCircle, Copy } from 'lucide-react';
 import { Button } from './ui/button';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Separator } from './ui/separator';
 import { Badge } from './ui/badge';
 
 interface Props {
   status: string;
   content: string;
-  confidence?: string;
+  confidence?: number;
 }
 
 const SparkCard: React.FC<Props> = ({ status, content, confidence }) => {
   const [copied, setCopied] = useState(false);
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(
-      '"Hello! We have received your request and it is being processed. You will receive an update within 24 hours..."'
-    );
+  const handleCopy = useCallback(async () => {
+    await navigator.clipboard.writeText(content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
+  }, [content]);
   return (
     <div className="relative shadow-2xl">
       <div className="rounded-2xl border border-neutral-700 bg-neutral-900 p-6">
@@ -39,7 +37,9 @@ const SparkCard: React.FC<Props> = ({ status, content, confidence }) => {
               </span>
             </div>
             {confidence && (
-              <Badge className="bg-green-500/10 text-green-400">{confidence}% confidence</Badge>
+              <Badge className="bg-green-500/10 text-green-400">
+                {confidence * 100}% confidence
+              </Badge>
             )}
           </div>
           <Separator />

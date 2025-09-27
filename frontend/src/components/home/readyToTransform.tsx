@@ -7,7 +7,7 @@ const ReadyToTransform = () => {
   const navigate = useNavigate();
   const click = useCallback(() => {
     navigate({ to: '/quickStart' });
-  }, []);
+  }, [navigate]);
   return (
     <section className="my-8 rounded-xl bg-gradient-to-r from-neutral-900/50 to-neutral-900/50 px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">

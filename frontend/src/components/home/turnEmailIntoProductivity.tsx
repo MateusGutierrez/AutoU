@@ -15,7 +15,7 @@ const TurnEmailIntoProductivity = () => {
   const navigate = useNavigate();
   const click = useCallback(() => {
     navigate({ to: '/quickStart' });
-  }, []);
+  }, [navigate]);
   return (
     <section className="px-4 pt-20 pb-32 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl text-center">
@@ -53,7 +53,7 @@ const TurnEmailIntoProductivity = () => {
         </div>
         <div className="relative mx-auto max-w-5xl">
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-rose-500/20 to-red-600/20 blur-3xl"></div>
-          <SparkCard status={status} content={content} confidence="95" />
+          <SparkCard status={status} content={content} confidence={95} />
         </div>
       </div>
     </section>

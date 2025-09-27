@@ -14,6 +14,7 @@ export interface EmailContextType {
   classifyByText: (text: string) => void;
   loading: boolean;
   result: ClassificationResult | null;
+  removeResult: () => void;
 }
 
 export interface EmailProviderProps {

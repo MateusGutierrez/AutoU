@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Upload, FileText, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,14 +16,14 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import { EmailClassificationFormSchema } from '@/schemas/emailClassificationForm';
 import type z from 'zod';
 import { useEmail } from '@/hooks/useEmail';
+import SparkCard from '../card';
 
 export function EmailClassificationForm() {
   const [activeTab, setActiveTab] = useState('text');
-  const { classifyByText, loading, result } = useEmail();
+  const { classifyByText, loading, result, removeResult } = useEmail();
   const form = useForm<z.infer<typeof EmailClassificationFormSchema>>({
     resolver: zodResolver(EmailClassificationFormSchema),
     defaultValues: {
@@ -31,9 +31,7 @@ export function EmailClassificationForm() {
       emailText: '',
     },
   });
-
   const watchInputMethod = form.watch('inputMethod');
-
   async function onSubmit(data: z.infer<typeof EmailClassificationFormSchema>) {
     if (data.inputMethod === 'text') {
       classifyByText(data.emailText as string);
@@ -59,7 +57,10 @@ export function EmailClassificationForm() {
       form.setValue('file', file);
     }
   };
-
+  const clear = useCallback(() => {
+    removeResult();
+    form.reset();
+  }, [result]);
   return (
     <div className="mx-auto w-full max-w-4xl space-y-8">
       <Card>
@@ -89,25 +90,33 @@ export function EmailClassificationForm() {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="text" className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="emailText"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email Content</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Paste the email content you want to classify here..."
-                            className="min-h-[200px] resize-y"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>Enter the full email text for analysis</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <TabsContent value="text" className="space-y-6 py-8">
+                  {result ? (
+                    <SparkCard
+                      content={result.suggested_response}
+                      status={result.category}
+                      confidence={result.confidence}
+                    />
+                  ) : (
+                    <FormField
+                      control={form.control}
+                      name="emailText"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email Content</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Paste the email content you want to classify here..."
+                              className="min-h-[100px] resize-y"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormDescription>Enter the full email text for analysis</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
                 </TabsContent>
 
                 <TabsContent value="file" className="space-y-4">
@@ -145,9 +154,20 @@ export function EmailClassificationForm() {
                   />
                 </TabsContent>
               </Tabs>
-              <Button type="submit" disabled={loading} className="mx-auto flex w-fit" size="lg">
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Classify Email'}
-              </Button>
+              {result ? (
+                <Button
+                  onClick={clear}
+                  className="mx-auto flex w-fit"
+                  size="lg"
+                  variant={'secondary'}
+                >
+                  Clear
+                </Button>
+              ) : (
+                <Button type="submit" disabled={loading} className="mx-auto flex w-fit" size="lg">
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Classify Email'}
+                </Button>
+              )}
             </form>
           </Form>
         </CardContent>
