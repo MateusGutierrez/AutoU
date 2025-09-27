@@ -8,7 +8,7 @@ export const Route = createFileRoute('/quickStart')({
 function RouteComponent() {
   return (
     <>
-      <div className='flex flex-col gap-2 mt-4'>
+      <div className="flex flex-col gap-2 mt-4">
         <h1 className="scroll-m-20 text-start text-2xl font-extrabold tracking-tight text-balance">
           Intelligent Email Classification
         </h1>
@@ -17,9 +17,9 @@ function RouteComponent() {
           and get personalized response suggestions quickly and efficiently.
         </p>
       </div>
-        <div className="flex-1 items-center justify-center p-2 py-16">
-          <EmailClassificationForm />
-        </div>
+      <div className="flex-1 items-center justify-center p-2 py-16">
+        <EmailClassificationForm />
+      </div>
     </>
   );
 }

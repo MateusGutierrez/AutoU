@@ -1,6 +1,7 @@
 import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
+import { Link } from '@tanstack/react-router';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -21,29 +22,23 @@ const Footer: React.FC = () => {
             <h4 className="font-medium">Links Rápidos</h4>
             <nav className="flex flex-col space-y-2">
               <a
-                href="#sobre"
+                href="/"
                 className="text-muted-foreground hover:text-foreground text-sm transition-colors"
               >
-                Sobre
-              </a>
+                Home
+              </a>{' '}
               <a
-                href="#projetos"
+                href="/quickStart"
                 className="text-muted-foreground hover:text-foreground text-sm transition-colors"
               >
-                Projetos
-              </a>
+                Quick Start
+              </a>{' '}
               <a
-                href="#habilidades"
+                href="/history"
                 className="text-muted-foreground hover:text-foreground text-sm transition-colors"
               >
-                Habilidades
-              </a>
-              <a
-                href="#contato"
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
-                Contato
-              </a>
+                History
+              </a>{' '}
             </nav>
           </div>
           <div className="flex w-full flex-col items-end space-y-3">
