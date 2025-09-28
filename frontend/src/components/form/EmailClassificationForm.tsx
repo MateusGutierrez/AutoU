@@ -19,11 +19,12 @@ import type z from 'zod';
 import { useEmail } from '@/hooks/useEmail';
 import SparkCard from '../card';
 import logo from '@/assets/sparkmail.png';
+import { useEmailStore } from '@/store';
 
 export function EmailClassificationForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { classifyByText, loading, result, removeResult, classifyByFile } = useEmail();
-
+  const { classifyByText, classifyByFile } = useEmail();
+  const {loading, result , clearResult} = useEmailStore()
   const form = useForm<z.infer<typeof EmailClassificationFormSchema>>({
     resolver: zodResolver(EmailClassificationFormSchema),
     defaultValues: {
@@ -31,8 +32,7 @@ export function EmailClassificationForm() {
       emailText: '',
     },
   });
-
-  const onSubmit = useCallback(
+  const onSubmit = 
     (data: z.infer<typeof EmailClassificationFormSchema>) => {
       if (selectedFile) {
         form.setValue('inputMethod', 'file');
@@ -41,58 +41,51 @@ export function EmailClassificationForm() {
       } else if (data.emailText?.trim()) {
         form.setValue('inputMethod', 'text');
         classifyByText(data.emailText);
-      } else {
-        toast.error('Required content', {
-          description: 'Please enter text or select a file',
-        });
-        return;
       }
-    },
-    [form, classifyByFile, classifyByText, selectedFile]
-  );
+    };
 
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    form.setValue('inputMethod', 'file');
-    if (file) {
-      const validTypes = ['text/plain', 'application/pdf'];
-      if (!validTypes.includes(file.type)) {
-        toast.error('Invalid file format', {
-          description: 'Only .txt and .pdf files are supported',
-        });
-        return;
+  const handleFileChange = 
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      form.setValue('inputMethod', 'file');
+      if (file) {
+        const validTypes = ['text/plain', 'application/pdf'];
+        if (!validTypes.includes(file.type)) {
+          toast.error('Invalid file format', {
+            description: 'Only .txt and .pdf files are supported',
+          });
+          return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error('File too large', {
+            description: 'File must be less than 5MB',
+          });
+          return;
+        }
+        setSelectedFile(file);
+        form.setValue('file', file);
+        form.setValue('emailText', '');
       }
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('File too large', {
-          description: 'File must be less than 5MB',
-        });
-        return;
-      }
+    };
 
-      setSelectedFile(file);
-      form.setValue('file', file);
-      form.setValue('emailText', '');
-    }
-  }, [setSelectedFile, form]);
-
-  const removeFile = useCallback(() => {
+  const removeFile = () => {
     setSelectedFile(null);
     form.setValue('file', undefined);
-  }, [form]);
+  };
 
-  const clear = useCallback(() => {
-    removeResult();
+ const clear = () => {
+    clearResult();
     setSelectedFile(null);
     form.reset({
       inputMethod: 'text',
       emailText: '',
+      file: undefined,
     });
-  }, [removeResult, form]);
+  };
 
-  const isFileSelected = selectedFile !== null
-  const hasTextContent = form.watch('emailText')?.trim() !== ''
-  const canSubmit =  (isFileSelected || hasTextContent) && !loading
-
+  const isFileSelected = selectedFile !== null;
+  const hasTextContent = form.watch('emailText')?.trim() !== '';
+  const canSubmit = (isFileSelected || hasTextContent) && !loading;
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
       <Card>
@@ -132,18 +125,18 @@ export function EmailClassificationForm() {
                       >
                         <X className="h-4 w-4" />
                       </Button>
-                       <Button
-                                type="submit"
-                                disabled={!canSubmit}
-                                className="flex items-center justify-center "
-                                size="icon"
-                              >
-                                {loading ? (
-                                  <Loader2 className="h-4 w-4 animate-spin" />
-                                ) : (
-                                  <Send className="h-4 w-4" />
-                                )}
-                              </Button>
+                      <Button
+                        type="submit"
+                        disabled={!canSubmit}
+                        className="flex items-center justify-center "
+                        size="icon"
+                      >
+                        {loading ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Send className="h-4 w-4" />
+                        )}
+                      </Button>
                     </div>
                   ) : (
                     <FormField

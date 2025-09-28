@@ -13,8 +13,6 @@ export interface ClassificationResult {
 export interface EmailContextType {
   classifyByText: (text: string) => void;
   classifyByFile: (file: File) => void;
-  loading: boolean;
-  result: ClassificationResult | null;
   removeResult: () => void;
 }
 

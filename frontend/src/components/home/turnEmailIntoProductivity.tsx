@@ -29,7 +29,7 @@ const TurnEmailIntoProductivity = () => {
           Turn Emails into Productivity with
           <div className="flex items-center justify-center">
             <img src={logo} alt="logo" className="w-12 md:w-20" />
-            <span className="bg-gradient-to-r from-rose-800 via-rose-700 to-rose-600 bg-clip-text text-transparent text-5xl sm:text-7xl">
+            <span className="bg-gradient-to-r from-red-800 via-red-700 to-red-600 bg-clip-text text-transparent text-5xl sm:text-7xl">
               {' '}
               SparkMail
             </span>
