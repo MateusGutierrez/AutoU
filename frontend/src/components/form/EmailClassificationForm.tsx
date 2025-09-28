@@ -89,28 +89,29 @@ export function EmailClassificationForm() {
       <Card>
         <CardHeader className="flex items-center justify-center gap-2">
           <img src={logo} alt="logo" width={38} />
-          <CardTitle className="flex items-center justify-center gap-2 text-3xl text-center">
-            Automatic Email Classification
+          <CardTitle className="flex items-center justify-center gap-2 text-center text-3xl">
+            Olá, como posso te ajudar hoje ? 
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="relative space-y-6">
               {result ? (
                 <SparkCard
                   content={result.suggested_response}
                   status={result.category}
                   confidence={result.confidence}
+                  isUrgent={result.is_urgent}
                   clear={clear}
                 />
               ) : (
                 <div className="space-y-4">
                   {isFileSelected ? (
-                    <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/50 p-4">
-                      <FileText className="h-5 w-5 text-muted-foreground" />
+                    <div className="border-border bg-muted/50 flex items-center gap-3 rounded-lg border p-4">
+                      <FileText className="text-muted-foreground h-5 w-5" />
                       <div className="flex-1">
                         <p className="text-sm font-medium">{selectedFile.name}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-muted-foreground text-xs">
                           {(selectedFile.size / 1024).toFixed(1)} KB
                         </p>
                       </div>
@@ -126,7 +127,7 @@ export function EmailClassificationForm() {
                       <Button
                         type="submit"
                         disabled={!canSubmit}
-                        className="flex items-center justify-center "
+                        className="flex items-center justify-center"
                         size="icon"
                       >
                         {loading ? (
@@ -144,18 +145,18 @@ export function EmailClassificationForm() {
                         <FormItem>
                           <FormControl>
                             <div className="relative cursor-pointer">
-                              <div className="absolute left-3 bottom-3 cursor-pointer">
+                              <div className="absolute bottom-3 left-3 cursor-pointer">
                                 <input
                                   type="file"
                                   accept=".txt,.pdf"
                                   onChange={handleFileChange}
                                   className="absolute inset-0 z-10 h-6 w-6 cursor-pointer opacity-0"
-                                  title="Select file"
+                                  title="Escolha um arquivo"
                                 />
-                                <Paperclip className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer" />
+                                <Paperclip className="text-muted-foreground hover:text-foreground h-5 w-5 cursor-pointer transition-colors" />
                               </div>
                               <Textarea
-                                placeholder="Paste the email content you want to classify here..."
+                                placeholder="Insira aqui o conteúdo de email que você quer classificar..."
                                 className="min-h-[120px] resize-y"
                                 {...field}
                                 onClick={() => form.setValue('inputMethod', 'text')}
@@ -163,7 +164,7 @@ export function EmailClassificationForm() {
                               <Button
                                 type="submit"
                                 disabled={!canSubmit}
-                                className="mx-auto flex items-center justify-center absolute bottom-3 right-3"
+                                className="absolute right-3 bottom-3 mx-auto flex items-center justify-center"
                                 size="icon"
                               >
                                 {loading ? (
@@ -175,8 +176,7 @@ export function EmailClassificationForm() {
                             </div>
                           </FormControl>
                           <FormDescription>
-                            Type the email text or click the upload icon to select a file (.txt,
-                            .pdf - max. 5MB)
+                           Digite o texto do e-mail ou clique no ícone de upload para selecionar um arquivo (.txt, .pdf - máx. 5 MB)
                           </FormDescription>
                           <FormMessage />
                         </FormItem>

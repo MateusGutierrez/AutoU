@@ -3,18 +3,18 @@ import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/history')({
   component: RouteComponent,
+  
 });
 
 function RouteComponent() {
   return (
     <>
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="mt-4 flex flex-col gap-2">
         <h1 className="scroll-m-20 text-start text-2xl font-extrabold tracking-tight text-balance">
-          Email Classification History
+          Histórico de classificação de emails
         </h1>
         <p>
-          View the complete history of your classified emails with detailed analysis including
-          status, urgency level, confidence scores, and content type for better email management.
+          Visualize o histórico completo de seus e-mails classificados com análise detalhada, incluindo status, nível de urgência, índices de confiança e tipo de conteúdo para melhor gerenciamento de e-mail.
         </p>
       </div>
       <div className="flex-1 items-center justify-center p-2 py-16">

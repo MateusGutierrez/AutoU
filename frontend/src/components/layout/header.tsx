@@ -16,13 +16,13 @@ const Header: React.FC = () => {
             </div>
           </Link>{' '}
           <Link to="/" className="[&.active]:font-bold">
-            Home
+            Início
           </Link>{' '}
           <Link to="/quickStart" className="[&.active]:font-bold">
-            Quick Start
+            Formulário
           </Link>{' '}
           <Link to="/history" className="[&.active]:font-bold">
-            History
+            Histórico
           </Link>{' '}
         </div>
       </div>

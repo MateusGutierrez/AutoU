@@ -7,8 +7,8 @@ import { useNavigate } from '@tanstack/react-router';
 import logo from '@/assets/sparkmail.png';
 
 const content =
-  '"Hello! We have received your request and it is being processed. You will receive an update within 24 hours..."';
-const status = 'Productive';
+  '"Olá! Recebemos sua solicitação e ela está sendo processada. Você receberá uma atualização dentro de 24 horas..."';
+const status = 'Produtivo';
 
 const TurnEmailIntoProductivity = () => {
   const navigate = useNavigate();
@@ -24,10 +24,10 @@ const TurnEmailIntoProductivity = () => {
         </Badge>
 
         <h1 className="mb-8 text-3xl leading-tight font-bold md:text-4xl">
-          Turn Emails into Productivity with
+          Transforme emails em produtividade com
           <div className="flex items-center justify-center">
             <img src={logo} alt="logo" className="w-12 md:w-20" />
-            <span className="bg-gradient-to-r from-red-800 via-red-700 to-red-600 bg-clip-text text-transparent text-6xl sm:text-6xl">
+            <span className="bg-gradient-to-r from-red-800 via-red-700 to-red-600 bg-clip-text text-6xl text-transparent sm:text-6xl">
               {' '}
               SparkMail
             </span>
@@ -35,19 +35,19 @@ const TurnEmailIntoProductivity = () => {
         </h1>
 
         <p className="mx-auto mb-12 max-w-4xl text-xl leading-relaxed md:text-2xl">
-          The first AI platform in Brazil that automatically classifies corporate emails, suggests
-          smart replies, and frees your team to focus on what really matters.
+          A primeira inteligência artificial do Brasil que automaticamente classifica emails corporativos, 
+          sugere respostas inteligentes e libera seu time para focar no que realmente importa.
         </p>
 
         <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row">
           <Button className="px-8 py-6" onClick={click} size={'lg'}>
-            Get Started
+            Começar
             <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
         <div className="relative mx-auto max-w-5xl">
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-rose-500/20 to-red-600/20 blur-3xl"></div>
-          <SparkCard status={status} content={content} confidence={0.95} />
+          <SparkCard status={status} content={content} confidence={0.95} isUrgent/>
         </div>
       </div>
     </section>

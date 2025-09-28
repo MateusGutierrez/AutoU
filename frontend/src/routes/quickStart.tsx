@@ -8,13 +8,12 @@ export const Route = createFileRoute('/quickStart')({
 function RouteComponent() {
   return (
     <>
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="mt-4 flex flex-col gap-2">
         <h1 className="scroll-m-20 text-start text-2xl font-extrabold tracking-tight text-balance">
-          Intelligent Email Classification
+          Classificação Inteligente de Email
         </h1>
         <p>
-          Use our advanced artificial intelligence technology to automatically classify your emails
-          and get personalized response suggestions quickly and efficiently.
+          Use nossa tecnologia avançada de inteligência artificial para classificar automaticamente seus e-mails e obter sugestões de respostas personalizadas de forma rápida e eficiente.
         </p>
       </div>
       <div className="flex-1 items-center justify-center p-2 py-16">

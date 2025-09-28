@@ -2,7 +2,7 @@ const historyData = [
   {
     status: 'Improdutivo',
     content: 'Feliz aniversário! Que você tenha um dia incrível cheio de alegrias! 🎉',
-    confidence: 0.95,
+    confidence: 0.25,
     is_urgent: false,
     type: 'text',
   },
@@ -10,14 +10,14 @@ const historyData = [
     status: 'Improdutivo',
     content:
       'Feliz Natal e um próspero Ano Novo! Desejo muita paz e felicidade para você e sua família! 🎄',
-    confidence: 0.92,
+    confidence: 0.52,
     is_urgent: false,
     type: 'text',
   },
   {
     status: 'Improdutivo',
     content: 'Muito obrigado pela ajuda de ontem, foi fundamental para o projeto dar certo!',
-    confidence: 0.88,
+    confidence: 0.68,
     is_urgent: false,
     type: 'text',
   },

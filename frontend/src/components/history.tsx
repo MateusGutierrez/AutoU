@@ -27,15 +27,15 @@ const History = () => {
   };
 
   return (
-    <div className="border rounded-xl p-2">
+    <div className="rounded-xl border p-2">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Status</TableHead>
-            <TableHead className="text-start">Is Urgent ?</TableHead>
-            <TableHead className="min-w-[400px]">Content</TableHead>
-            <TableHead className="text-center">Confidence</TableHead>
-            <TableHead className="text-center">Type</TableHead>
+            <TableHead className="w-[100px]">Classificação</TableHead>
+            <TableHead className="text-start">É urgente ?</TableHead>
+            <TableHead className="min-w-[400px]">Conteúdo</TableHead>
+            <TableHead className="text-center">Confiabilidade</TableHead>
+            <TableHead className="text-center"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -43,14 +43,14 @@ const History = () => {
             <TableRow key={index} className="h-auto">
               <TableCell
                 className={cn(
-                  'font-medium text-start py-4 align-top',
+                  'py-4 text-start align-top font-medium',
                   { 'text-emerald-600': message.status === 'Produtivo' },
-                  { 'text-destructive': message.status === 'Improdutivo' }
+                  { 'text-amber-300': message.status === 'Improdutivo' }
                 )}
               >
                 {message.status}
               </TableCell>
-              <TableCell className="text-start py-4 align-top">
+              <TableCell className="py-4 text-start align-top">
                 {String(message.is_urgent) === 'true' ? (
                   <Check className="text-emerald-600" />
                 ) : (
@@ -74,14 +74,14 @@ const History = () => {
                   {message.content.length > 200 && (
                     <button
                       onClick={() => toggleRowExpansion(index)}
-                      className="text-xs text-primary hover:text-primary-800 font-medium underline"
+                      className="text-primary hover:text-primary-800 text-xs font-medium underline"
                     >
                       {expandedRows.has(index) ? 'Ver menos' : 'Ver mais'}
                     </button>
                   )}
                 </div>
               </TableCell>
-              <TableCell className="text-center">{message.confidence * 100}%</TableCell>
+              <TableCell className={cn("text-center text-destructive", {"text-green-400": message.confidence >= 0.7}, {"text-amber-300": message.confidence < 0.7 && message.confidence >= 0.5})}>{message.confidence * 100}%</TableCell>
               <TableCell className="text-center">
                 <Tooltip>
                   <TooltipTrigger>

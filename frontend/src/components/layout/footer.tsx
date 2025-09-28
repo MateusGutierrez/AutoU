@@ -23,19 +23,19 @@ const Footer: React.FC = () => {
                 href="/"
                 className="text-muted-foreground hover:text-foreground text-sm transition-colors"
               >
-                Home
+                Início
               </a>{' '}
               <a
                 href="/quickStart"
                 className="text-muted-foreground hover:text-foreground text-sm transition-colors"
               >
-                Quick Start
+                Formulário
               </a>{' '}
               <a
                 href="/history"
                 className="text-muted-foreground hover:text-foreground text-sm transition-colors"
               >
-                History
+                Histórico
               </a>{' '}
             </nav>
           </div>
