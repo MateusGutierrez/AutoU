@@ -1,5 +1,4 @@
-
-    const historyData = [
+const historyData = [
   {
     status: 'Improdutivo',
     content: 'Feliz aniversário! Que você tenha um dia incrível cheio de alegrias! 🎉',
@@ -101,4 +100,4 @@
     type: 'text',
   },
 ];
-export default historyData
+export default historyData;

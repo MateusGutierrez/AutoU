@@ -1,45 +1,24 @@
-import type { ClassificationResult } from '@/context/interface';
 import historyData from '@/utils/useHistoryData';
 import { create } from 'zustand';
+import type { EmailStore, HistoryType } from './interface';
 
-export interface HistoryType {
-    status: string;
-    content: string;
-    confidence: number;
-    is_urgent: boolean;
-    type: string;
-}
+export const useEmailStore = create<EmailStore>()(set => ({
+  result: null,
+  history: historyData,
+  loading: false,
 
-interface EmailStore {
-    result: ClassificationResult | null;
-    setResult: (result: ClassificationResult | null) => void;
-    loading: boolean;
-    setLoading: (value: boolean) => void;
-    history: HistoryType[];
-    addToHistory: (value: HistoryType) => void;
-    clearResult: () => void;
-}
+  setResult: result => set(() => ({ result })),
 
-export const useEmailStore = create<EmailStore>()(
-        (set, get) => ({
-            result: null,
-            history: historyData,
-            loading: false,
-            
-            setResult: (result) => set(() => ({ result })),
-            
-            clearResult: () => set(() => ({ 
-                result: null, 
-                loading: false 
-            })),
-            
-            setLoading: (loading) => set(() => ({ loading })),
-            
-            addToHistory: (value: HistoryType) => 
-                set((state) => ({ 
-                    history: [value, ...state.history]
-                })),
-            
-        }
-    )
-);
+  clearResult: () =>
+    set(() => ({
+      result: null,
+      loading: false,
+    })),
+
+  setLoading: loading => set(() => ({ loading })),
+
+  addToHistory: (value: HistoryType) =>
+    set(state => ({
+      history: [value, ...state.history],
+    })),
+}));

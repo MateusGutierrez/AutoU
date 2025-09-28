@@ -26,7 +26,6 @@ const History = () => {
     setExpandedRows(newExpandedRows);
   };
 
-
   return (
     <div className="border rounded-xl p-2">
       <Table>
@@ -60,14 +59,17 @@ const History = () => {
               </TableCell>
               <TableCell className="max-w-[400px] py-4">
                 <div className="space-y-2">
-                  <div className={cn(
-                    "text-sm leading-relaxed break-words whitespace-pre-wrap",
-                    !expandedRows.has(index) && message.content.length > 200 && "line-clamp-4"
-                  )}>
-                    {expandedRows.has(index) 
-                      ? message.content 
-                      : message.content.length > 200 ? message.content : message.content
-                    }
+                  <div
+                    className={cn(
+                      'text-sm leading-relaxed break-words whitespace-pre-wrap',
+                      !expandedRows.has(index) && message.content.length > 200 && 'line-clamp-4'
+                    )}
+                  >
+                    {expandedRows.has(index)
+                      ? message.content
+                      : message.content.length > 200
+                        ? message.content
+                        : message.content}
                   </div>
                   {message.content.length > 200 && (
                     <button

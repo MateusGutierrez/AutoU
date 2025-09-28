@@ -1,6 +1,5 @@
-import { BrushCleaning, Check, CheckCircle, Copy } from 'lucide-react';
+import { BrushCleaning, CheckCircle } from 'lucide-react';
 import { Button } from './ui/button';
-import { useCallback, useEffect, useState } from 'react';
 import { Separator } from './ui/separator';
 import { Badge } from './ui/badge';
 
@@ -12,13 +11,6 @@ interface Props {
 }
 
 const SparkCard: React.FC<Props> = ({ status, content, confidence, clear }) => {
-  const [copied, setCopied] = useState(false);
-  const handleCopy = async () => {
-      await navigator.clipboard.writeText(content);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 500);
-  };
-
   return (
     <div className="relative shadow-2xl">
       <div className="rounded-2xl border border-neutral-700 bg-neutral-900 p-6">
@@ -44,14 +36,6 @@ const SparkCard: React.FC<Props> = ({ status, content, confidence, clear }) => {
               </Badge>
             )}
             <div className="absolute top-2 right-2 flex gap-2">
-              <Button onClick={handleCopy} variant="ghost" size="icon">
-                {copied ? (
-                  <Check className="h-4 w-4 text-green-500" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </Button>
-
               <Button type="button" onClick={clear} variant="ghost" size="icon">
                 <BrushCleaning className="h-4 w-4" />
               </Button>

@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { FileText, Loader2, X, Send, Paperclip } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +24,7 @@ import { useEmailStore } from '@/store';
 export function EmailClassificationForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { classifyByText, classifyByFile } = useEmail();
-  const {loading, result , clearResult} = useEmailStore()
+  const { loading, result, clearResult } = useEmailStore();
   const form = useForm<z.infer<typeof EmailClassificationFormSchema>>({
     resolver: zodResolver(EmailClassificationFormSchema),
     defaultValues: {
@@ -32,48 +32,46 @@ export function EmailClassificationForm() {
       emailText: '',
     },
   });
-  const onSubmit = 
-    (data: z.infer<typeof EmailClassificationFormSchema>) => {
-      if (selectedFile) {
-        form.setValue('inputMethod', 'file');
-        form.setValue('file', selectedFile);
-        classifyByFile(selectedFile);
-      } else if (data.emailText?.trim()) {
-        form.setValue('inputMethod', 'text');
-        classifyByText(data.emailText);
-      }
-    };
-
-  const handleFileChange = 
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
+  const onSubmit = (data: z.infer<typeof EmailClassificationFormSchema>) => {
+    if (selectedFile) {
       form.setValue('inputMethod', 'file');
-      if (file) {
-        const validTypes = ['text/plain', 'application/pdf'];
-        if (!validTypes.includes(file.type)) {
-          toast.error('Invalid file format', {
-            description: 'Only .txt and .pdf files are supported',
-          });
-          return;
-        }
-        if (file.size > 5 * 1024 * 1024) {
-          toast.error('File too large', {
-            description: 'File must be less than 5MB',
-          });
-          return;
-        }
-        setSelectedFile(file);
-        form.setValue('file', file);
-        form.setValue('emailText', '');
+      form.setValue('file', selectedFile);
+      classifyByFile(selectedFile);
+    } else if (data.emailText?.trim()) {
+      form.setValue('inputMethod', 'text');
+      classifyByText(data.emailText);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    form.setValue('inputMethod', 'file');
+    if (file) {
+      const validTypes = ['text/plain', 'application/pdf'];
+      if (!validTypes.includes(file.type)) {
+        toast.error('Invalid file format', {
+          description: 'Only .txt and .pdf files are supported',
+        });
+        return;
       }
-    };
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('File too large', {
+          description: 'File must be less than 5MB',
+        });
+        return;
+      }
+      setSelectedFile(file);
+      form.setValue('file', file);
+      form.setValue('emailText', '');
+    }
+  };
 
   const removeFile = () => {
     setSelectedFile(null);
     form.setValue('file', undefined);
   };
 
- const clear = () => {
+  const clear = () => {
     clearResult();
     setSelectedFile(null);
     form.reset({
