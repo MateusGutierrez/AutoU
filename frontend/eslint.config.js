@@ -4,20 +4,21 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import prettier from 'eslint-plugin-prettier';
 import tanstackRouter from '@tanstack/eslint-plugin-router';
+import tseslint from 'typescript-eslint';
 
 export default [
   {
     ignores: ['dist', 'node_modules', '.git', 'build', 'coverage'],
   },
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2024,
-      sourceType: 'module',
+      parser: tseslint.parser,
       parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        jsx: true,
+        tsx: true,
       },
       globals: {
         browser: true,
@@ -31,6 +32,7 @@ export default [
       'react-refresh': reactRefresh,
       prettier,
       '@tanstack/router': tanstackRouter,
+      '@typescript-eslint': tseslint.plugin,
     },
     settings: {
       react: {
@@ -39,64 +41,27 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      'no-unused-vars': [
-        'warn',
-        {
-          vars: 'all',
-          args: 'after-used',
-          ignoreRestSiblings: true,
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
-      'no-console': [
-        'warn',
-        {
-          allow: ['warn', 'error', 'info'],
-        },
-      ],
+      ...tseslint.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
+      ...reactHooks.configs.recommended.rules,
+      ...tanstackRouter.configs.recommended.rules,
+
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      'react/jsx-no-target-blank': 'warn',
-      'react/jsx-uses-react': 'off',
-      'react/jsx-uses-vars': 'error',
-      ...reactHooks.configs.recommended.rules,
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      'react-refresh/only-export-components': [
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
         'warn',
-        {
-          allowConstantExport: true,
-        },
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-      ...tanstackRouter.configs.recommended.rules,
+
       'prettier/prettier': [
         'warn',
         {
           endOfLine: 'auto',
-          semi: true,
-          singleQuote: true,
-          tabWidth: 2,
-          trailingComma: 'es5',
-          printWidth: 80,
-          bracketSpacing: true,
-          jsxSingleQuote: false,
-          arrowParens: 'always',
-          useTabs: false,
         },
       ],
-      'no-debugger': 'warn',
-      'no-alert': 'warn',
-      'prefer-const': 'warn',
-      'no-var': 'error',
-      'prefer-arrow-callback': 'warn',
-      'prefer-template': 'warn',
-      'no-duplicate-imports': 'error',
-      'no-empty': 'warn',
-      'no-empty-pattern': 'warn',
-      'no-unreachable': 'warn',
     },
   },
 ];
