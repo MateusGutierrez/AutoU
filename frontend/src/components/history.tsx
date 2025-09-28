@@ -81,7 +81,15 @@ const History = () => {
                   )}
                 </div>
               </TableCell>
-              <TableCell className={cn("text-center text-destructive", {"text-green-400": message.confidence >= 0.7}, {"text-amber-300": message.confidence < 0.7 && message.confidence >= 0.5})}>{message.confidence * 100}%</TableCell>
+              <TableCell
+                className={cn(
+                  'text-destructive text-center',
+                  { 'text-green-400': message.confidence >= 0.7 },
+                  { 'text-amber-300': message.confidence < 0.7 && message.confidence >= 0.5 }
+                )}
+              >
+                {message.confidence * 100}%
+              </TableCell>
               <TableCell className="text-center">
                 <Tooltip>
                   <TooltipTrigger>

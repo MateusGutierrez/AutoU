@@ -29,22 +29,36 @@ const SparkCard: React.FC<Props> = ({ status, content, confidence, clear, isUrge
             <div className="flex items-center gap-3">
               <CheckCircle className="h-5 w-5 text-green-400" />
               <span className="font-light">
-                Email classificado como: <span className={cn("font-semibold", { 'text-green-400': status === 'Produtivo' },
-                  { 'text-amber-300': status === 'Improdutivo' })}>{status}</span>
+                Email classificado como:{' '}
+                <span
+                  className={cn(
+                    'font-semibold',
+                    { 'text-green-400': status === 'Produtivo' },
+                    { 'text-amber-300': status === 'Improdutivo' }
+                  )}
+                >
+                  {status}
+                </span>
               </span>
             </div>
-            <div className='flex items-center gap-2'>
-            {isUrgent && (
-              <Badge className="bg-red-500/10 text-red-400">
-                <ShieldAlert className='text-destructive w-5 h-5' />
-                <p>urgente</p>
-              </Badge>
-            )}
-            {confidence && (
-              <Badge className={cn("bg-green-500/10 text-destructive", {"text-green-400": confidence >= 0.7}, {"text-amber-300": confidence < 0.7 && confidence >= 0.5})}>
-                {confidence * 100}% confiabilidade
-              </Badge>
-            )}
+            <div className="flex items-center gap-2">
+              {isUrgent && (
+                <Badge className="bg-red-500/10 text-red-400">
+                  <ShieldAlert className="text-destructive h-5 w-5" />
+                  <p>urgente</p>
+                </Badge>
+              )}
+              {confidence && (
+                <Badge
+                  className={cn(
+                    'text-destructive bg-green-500/10',
+                    { 'text-green-400': confidence >= 0.7 },
+                    { 'text-amber-300': confidence < 0.7 && confidence >= 0.5 }
+                  )}
+                >
+                  {confidence * 100}% confiabilidade
+                </Badge>
+              )}
             </div>
             <div className="absolute top-2 right-2 flex gap-2">
               <Button type="button" onClick={clear} variant="ghost" size="icon">

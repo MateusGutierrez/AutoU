@@ -90,7 +90,7 @@ export function EmailClassificationForm() {
         <CardHeader className="flex items-center justify-center gap-2">
           <img src={logo} alt="logo" width={38} />
           <CardTitle className="flex items-center justify-center gap-2 text-center text-3xl">
-            Olá, como posso te ajudar hoje ? 
+            Olá, como posso te ajudar hoje ?
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -157,7 +157,7 @@ export function EmailClassificationForm() {
                               </div>
                               <Textarea
                                 placeholder="Insira aqui o conteúdo de email que você quer classificar..."
-                                className="min-h-[120px] resize-y"
+                                className="min-h-[95px] resize-y"
                                 {...field}
                                 onClick={() => form.setValue('inputMethod', 'text')}
                               />
@@ -176,7 +176,8 @@ export function EmailClassificationForm() {
                             </div>
                           </FormControl>
                           <FormDescription>
-                           Digite o texto do e-mail ou clique no ícone de upload para selecionar um arquivo (.txt, .pdf - máx. 5 MB)
+                            Digite o texto do e-mail ou clique no ícone de upload para selecionar um
+                            arquivo (.txt, .pdf - máx. 5 MB)
                           </FormDescription>
                           <FormMessage />
                         </FormItem>

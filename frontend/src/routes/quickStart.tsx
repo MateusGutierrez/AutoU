@@ -13,7 +13,8 @@ function RouteComponent() {
           Classificação Inteligente de Email
         </h1>
         <p>
-          Use nossa tecnologia avançada de inteligência artificial para classificar automaticamente seus e-mails e obter sugestões de respostas personalizadas de forma rápida e eficiente.
+          Use nossa tecnologia avançada de inteligência artificial para classificar automaticamente
+          seus e-mails e obter sugestões de respostas personalizadas de forma rápida e eficiente.
         </p>
       </div>
       <div className="flex-1 items-center justify-center p-2 py-16">
